@@ -75,18 +75,19 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 py-10 px-4">
       <Toaster />
       <div className="mx-auto max-w-3xl">
-        <Card>
-          <CardHeader className="rounded-t-xl bg-primary text-primary-foreground">
-            <CardTitle className="text-2xl">Candidate Details</CardTitle>
-            <CardDescription className="text-primary-foreground/80">Fill in your personal, experience and preference details.</CardDescription>
+        <Card className="shadow-2xl border-0 overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-primary-foreground">
+            <CardTitle className="text-3xl font-bold">Candidate Details</CardTitle>
+            <CardDescription className="text-primary-foreground/90">Fill in your personal, experience and preference details.</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={onSubmit} className="space-y-8">
-              <section className="space-y-4">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          <CardContent className="bg-white/80 backdrop-blur p-6 sm:p-8">
+            <form onSubmit={onSubmit} className="space-y-6">
+              <section className="space-y-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 to-white p-5 shadow-sm">
+                <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-indigo-700">
+                  <span className="inline-block h-2 w-2 rounded-full bg-indigo-600" />
                   Personal Information
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -108,8 +109,9 @@ function Index() {
                 </div>
               </section>
 
-              <section className="space-y-4">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <section className="space-y-4 rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50/80 to-white p-5 shadow-sm">
+                <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-emerald-700">
+                  <span className="inline-block h-2 w-2 rounded-full bg-emerald-600" />
                   Experience
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -134,8 +136,9 @@ function Index() {
                 </div>
               </section>
 
-              <section className="space-y-4">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              <section className="space-y-4 rounded-xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50/80 to-white p-5 shadow-sm">
+                <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-fuchsia-700">
+                  <span className="inline-block h-2 w-2 rounded-full bg-fuchsia-600" />
                   Preferences
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -174,19 +177,6 @@ function Index() {
                 </div>
               </section>
 
-              <div className="flex justify-end gap-3">
-                <Button type="button" variant="outline" onClick={() => setForm(initial)}>
-                  Reset
-                </Button>
-                <Button type="submit">Submit Details</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
 
 function Field({
   label,
