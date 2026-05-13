@@ -174,8 +174,26 @@ function Index() {
                       </label>
                     </RadioGroup>
                   </Field>
-                </div>
               </section>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <Button type="button" variant="outline" onClick={() => setForm(initial)}>
+                  Reset
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-700 hover:to-fuchsia-700"
+                >
+                  Submit Details
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
 
 
 function Field({
