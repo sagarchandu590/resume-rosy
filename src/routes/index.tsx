@@ -81,7 +81,7 @@ function Index() {
         <Card>
           <CardHeader className="rounded-t-xl bg-primary text-primary-foreground">
             <CardTitle className="text-2xl">Candidate Details</CardTitle>
-            <CardDescription>Fill in your personal, experience and preference details.</CardDescription>
+            <CardDescription className="text-primary-foreground/80">Fill in your personal, experience and preference details.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={onSubmit} className="space-y-8">
