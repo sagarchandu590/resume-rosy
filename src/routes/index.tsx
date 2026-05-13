@@ -174,6 +174,7 @@ function Index() {
                       </label>
                     </RadioGroup>
                   </Field>
+                </div>
               </section>
 
               <div className="flex justify-end gap-3 pt-2">
