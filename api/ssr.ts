@@ -7,5 +7,5 @@ export default async function (request: Request) {
 }
 
 export const config = {
-  runtime: "nodejs20.x",
+  runtime: "nodejs",
 };
