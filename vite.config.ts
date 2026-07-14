@@ -5,8 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import path from "node:path";
 
-// TanStack Start configured for the Vercel adapter.
-// Deploy with `bun run build` -> outputs `.vercel/output/` consumed by Vercel.
+// TanStack Start configured for Vercel deployment.
+// Vercel auto-detects `vite build` output and the `api/` serverless handler.
 export default defineConfig({
   resolve: {
     alias: {
@@ -22,9 +22,7 @@ export default defineConfig({
   plugins: [
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
-    tanstackStart({
-      target: "vercel",
-    }),
+    tanstackStart(),
     viteReact(),
   ],
 });
