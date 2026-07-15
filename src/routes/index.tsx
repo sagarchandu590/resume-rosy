@@ -244,10 +244,12 @@ function Index() {
 function Field({
   label,
   required,
+  error,
   children,
 }: {
   label: string;
   required?: boolean;
+  error?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -256,6 +258,8 @@ function Field({
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
+}
 }
