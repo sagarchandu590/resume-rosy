@@ -128,8 +128,24 @@ function Index() {
                   <Field label="Passed Out Year">
                     <Input type="number" value={form.passedOutYear} onChange={update("passedOutYear")} placeholder="2022" />
                   </Field>
-                  <Field label="Mobile Number" required>
-                    <Input type="tel" value={form.mobile} onChange={update("mobile")} placeholder="10-digit number" />
+                  <Field label="Mobile Number" required error={mobileError}>
+                    <Input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={10}
+                      value={form.mobile}
+                      onChange={updateMobile}
+                      onKeyDown={(e) => {
+                        if (
+                          ["e", "E", "+", "-", ".", ",", " "].includes(e.key)
+                        ) {
+                          e.preventDefault();
+                        }
+                      }}
+                      placeholder="10-digit number"
+                      aria-invalid={!!mobileError}
+                    />
                   </Field>
                   <Field label="Email ID" required>
                     <Input type="email" value={form.email} onChange={update("email")} placeholder="you@example.com" />
