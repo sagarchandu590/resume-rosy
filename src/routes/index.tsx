@@ -52,27 +52,54 @@ const initial: FormState = {
 
 function Index() {
   const [form, setForm] = useState<FormState>(initial);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [mobileError, setMobileError] = useState("");
 
   const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const onSubmit = (e: React.FormEvent) => {
+  const updateMobile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((f) => ({ ...f, mobile: digits }));
+    if (digits.length === 0 || digits.length === 10) {
+      setMobileError("");
+    } else {
+      setMobileError("Please enter a valid 10-digit mobile number.");
+    }
+  };
+
+  useEffect(() => {
+    if (!submitted) return;
+    const t = setTimeout(() => setSubmitted(false), 4000);
+    return () => clearTimeout(t);
+  }, [submitted]);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.fullName || !form.mobile || !form.email) {
       toast.error("Please fill name, mobile and email.");
       return;
     }
     if (!/^\d{10}$/.test(form.mobile)) {
-      toast.error("Mobile number must be 10 digits.");
+      setMobileError("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       toast.error("Enter a valid email address.");
       return;
     }
-    console.log("Candidate submission:", form);
-    toast.success("Details submitted successfully!");
-    setForm(initial);
+    setSubmitting(true);
+    try {
+      await new Promise((r) => setTimeout(r, 800));
+      console.log("Candidate submission:", form);
+      setForm(initial);
+      setMobileError("");
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
