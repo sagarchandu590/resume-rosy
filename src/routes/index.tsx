@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -53,8 +53,8 @@ const initial: FormState = {
 function Index() {
   const [form, setForm] = useState<FormState>(initial);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [mobileError, setMobileError] = useState("");
+  const navigate = useNavigate();
 
   const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -69,11 +69,6 @@ function Index() {
     }
   };
 
-  useEffect(() => {
-    if (!submitted) return;
-    const t = setTimeout(() => setSubmitted(false), 4000);
-    return () => clearTimeout(t);
-  }, [submitted]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +91,7 @@ function Index() {
       console.log("Candidate submission:", form);
       setForm(initial);
       setMobileError("");
-      setSubmitted(true);
+      navigate({ to: "/thank-you" });
     } finally {
       setSubmitting(false);
     }
@@ -112,22 +107,6 @@ function Index() {
             <CardDescription className="text-primary-foreground/90">Fill in your personal, experience and preference details.</CardDescription>
           </CardHeader>
           <CardContent className="bg-white/80 backdrop-blur p-6 sm:p-8">
-            {submitted && (
-              <div
-                role="status"
-                className="mb-6 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm"
-              >
-                <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600" />
-                <div>
-                  <p className="font-semibold text-emerald-800">
-                    🎉 Thank you! Your application has been submitted successfully.
-                  </p>
-                  <p className="mt-1 text-sm text-emerald-700">
-                    We appreciate your interest and will contact you if your profile matches our requirements.
-                  </p>
-                </div>
-              </div>
-            )}
             <form onSubmit={onSubmit} className="space-y-6">
               <section className="space-y-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 to-white p-5 shadow-sm">
                 <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-indigo-700">
