@@ -222,14 +222,19 @@ function Index() {
               </section>
 
               <div className="flex justify-end gap-3 pt-2">
-                <Button type="button" variant="outline" onClick={() => setForm(initial)}>
+                <Button type="button" variant="outline" onClick={() => setForm(initial)} disabled={submitting}>
                   Reset
                 </Button>
                 <Button
                   type="submit"
+                  disabled={submitting || !/^\d{10}$/.test(form.mobile)}
                   className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-700 hover:to-fuchsia-700"
                 >
-                  Submit Details
+                  {submitting ? (
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Submitting...</>
+                  ) : (
+                    "Submit Details"
+                  )}
                 </Button>
               </div>
             </form>
