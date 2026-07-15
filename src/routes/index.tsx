@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { CheckCircle2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -51,27 +52,54 @@ const initial: FormState = {
 
 function Index() {
   const [form, setForm] = useState<FormState>(initial);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [mobileError, setMobileError] = useState("");
 
   const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const onSubmit = (e: React.FormEvent) => {
+  const updateMobile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setForm((f) => ({ ...f, mobile: digits }));
+    if (digits.length === 0 || digits.length === 10) {
+      setMobileError("");
+    } else {
+      setMobileError("Please enter a valid 10-digit mobile number.");
+    }
+  };
+
+  useEffect(() => {
+    if (!submitted) return;
+    const t = setTimeout(() => setSubmitted(false), 4000);
+    return () => clearTimeout(t);
+  }, [submitted]);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.fullName || !form.mobile || !form.email) {
       toast.error("Please fill name, mobile and email.");
       return;
     }
     if (!/^\d{10}$/.test(form.mobile)) {
-      toast.error("Mobile number must be 10 digits.");
+      setMobileError("Please enter a valid 10-digit mobile number.");
+      toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       toast.error("Enter a valid email address.");
       return;
     }
-    console.log("Candidate submission:", form);
-    toast.success("Details submitted successfully!");
-    setForm(initial);
+    setSubmitting(true);
+    try {
+      await new Promise((r) => setTimeout(r, 800));
+      console.log("Candidate submission:", form);
+      setForm(initial);
+      setMobileError("");
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -84,6 +112,22 @@ function Index() {
             <CardDescription className="text-primary-foreground/90">Fill in your personal, experience and preference details.</CardDescription>
           </CardHeader>
           <CardContent className="bg-white/80 backdrop-blur p-6 sm:p-8">
+            {submitted && (
+              <div
+                role="status"
+                className="mb-6 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm"
+              >
+                <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600" />
+                <div>
+                  <p className="font-semibold text-emerald-800">
+                    🎉 Thank you! Your application has been submitted successfully.
+                  </p>
+                  <p className="mt-1 text-sm text-emerald-700">
+                    We appreciate your interest and will contact you if your profile matches our requirements.
+                  </p>
+                </div>
+              </div>
+            )}
             <form onSubmit={onSubmit} className="space-y-6">
               <section className="space-y-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 to-white p-5 shadow-sm">
                 <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-indigo-700">
@@ -100,8 +144,24 @@ function Index() {
                   <Field label="Passed Out Year">
                     <Input type="number" value={form.passedOutYear} onChange={update("passedOutYear")} placeholder="2022" />
                   </Field>
-                  <Field label="Mobile Number" required>
-                    <Input type="tel" value={form.mobile} onChange={update("mobile")} placeholder="10-digit number" />
+                  <Field label="Mobile Number" required error={mobileError}>
+                    <Input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={10}
+                      value={form.mobile}
+                      onChange={updateMobile}
+                      onKeyDown={(e) => {
+                        if (
+                          ["e", "E", "+", "-", ".", ",", " "].includes(e.key)
+                        ) {
+                          e.preventDefault();
+                        }
+                      }}
+                      placeholder="10-digit number"
+                      aria-invalid={!!mobileError}
+                    />
                   </Field>
                   <Field label="Email ID" required>
                     <Input type="email" value={form.email} onChange={update("email")} placeholder="you@example.com" />
@@ -178,14 +238,19 @@ function Index() {
               </section>
 
               <div className="flex justify-end gap-3 pt-2">
-                <Button type="button" variant="outline" onClick={() => setForm(initial)}>
+                <Button type="button" variant="outline" onClick={() => setForm(initial)} disabled={submitting}>
                   Reset
                 </Button>
                 <Button
                   type="submit"
+                  disabled={submitting || !/^\d{10}$/.test(form.mobile)}
                   className="bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-700 hover:to-fuchsia-700"
                 >
-                  Submit Details
+                  {submitting ? (
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Submitting...</>
+                  ) : (
+                    "Submit Details"
+                  )}
                 </Button>
               </div>
             </form>
@@ -200,10 +265,12 @@ function Index() {
 function Field({
   label,
   required,
+  error,
   children,
 }: {
   label: string;
   required?: boolean;
+  error?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -212,6 +279,7 @@ function Field({
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }
