@@ -112,6 +112,22 @@ function Index() {
             <CardDescription className="text-primary-foreground/90">Fill in your personal, experience and preference details.</CardDescription>
           </CardHeader>
           <CardContent className="bg-white/80 backdrop-blur p-6 sm:p-8">
+            {submitted && (
+              <div
+                role="status"
+                className="mb-6 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm"
+              >
+                <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600" />
+                <div>
+                  <p className="font-semibold text-emerald-800">
+                    🎉 Thank you! Your application has been submitted successfully.
+                  </p>
+                  <p className="mt-1 text-sm text-emerald-700">
+                    We appreciate your interest and will contact you if your profile matches our requirements.
+                  </p>
+                </div>
+              </div>
+            )}
             <form onSubmit={onSubmit} className="space-y-6">
               <section className="space-y-4 rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50/80 to-white p-5 shadow-sm">
                 <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-indigo-700">
