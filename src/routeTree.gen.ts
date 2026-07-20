@@ -10,30 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminCandidatesIndexRouteImport } from './routes/_authenticated/admin.candidates.index'
 import { Route as AuthenticatedAdminCandidatesIdRouteImport } from './routes/_authenticated/admin.candidates.$id'
 
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
   path: '/thank-you',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -55,16 +41,6 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAdminCandidatesIndexRoute =
   AuthenticatedAdminCandidatesIndexRouteImport.update({
     id: '/admin/candidates/',
@@ -80,11 +56,7 @@ const AuthenticatedAdminCandidatesIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/auth': typeof AuthRoute
   '/thank-you': typeof ThankYouRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
@@ -92,10 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/thank-you': typeof ThankYouRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
   '/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
@@ -105,11 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/admin': typeof AdminRouteWithChildren
-  '/auth': typeof AuthRoute
   '/thank-you': typeof ThankYouRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/_authenticated/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
@@ -119,11 +84,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
-    | '/auth'
     | '/thank-you'
-    | '/dashboard'
-    | '/admin/dashboard'
     | '/admin/login'
     | '/admin/'
     | '/admin/candidates/$id'
@@ -131,10 +92,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/thank-you'
-    | '/dashboard'
-    | '/admin/dashboard'
     | '/admin/login'
     | '/admin'
     | '/admin/candidates/$id'
@@ -143,11 +101,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/admin'
-    | '/auth'
     | '/thank-you'
-    | '/_authenticated/dashboard'
-    | '/admin/dashboard'
     | '/admin/login'
     | '/admin/'
     | '/_authenticated/admin/candidates/$id'
@@ -157,8 +111,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AdminRoute: typeof AdminRouteWithChildren
-  AuthRoute: typeof AuthRoute
   ThankYouRoute: typeof ThankYouRoute
 }
 
@@ -169,20 +121,6 @@ declare module '@tanstack/react-router' {
       path: '/thank-you'
       fullPath: '/thank-you'
       preLoaderRoute: typeof ThankYouRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -213,20 +151,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/admin/candidates/': {
       id: '/_authenticated/admin/candidates/'
       path: '/admin/candidates'
@@ -245,13 +169,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedAdminCandidatesIdRoute: typeof AuthenticatedAdminCandidatesIdRoute
   AuthenticatedAdminCandidatesIndexRoute: typeof AuthenticatedAdminCandidatesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedAdminCandidatesIdRoute: AuthenticatedAdminCandidatesIdRoute,
   AuthenticatedAdminCandidatesIndexRoute:
     AuthenticatedAdminCandidatesIndexRoute,
@@ -260,25 +182,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface AdminRouteChildren {
-  AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminDashboardRoute: AdminDashboardRoute,
-  AdminLoginRoute: AdminLoginRoute,
-  AdminIndexRoute: AdminIndexRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AdminRoute: AdminRouteWithChildren,
-  AuthRoute: AuthRoute,
   ThankYouRoute: ThankYouRoute,
 }
 export const routeTree = rootRouteImport
