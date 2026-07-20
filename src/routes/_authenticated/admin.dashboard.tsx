@@ -34,7 +34,7 @@ type Candidate = Tables<"candidates">;
 const STATUSES = ["New", "Under Review", "Shortlisted", "Interview Scheduled", "Selected", "Rejected"] as const;
 type Status = typeof STATUSES[number];
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute("/_authenticated/admin/dashboard")({
   head: () => ({ meta: [{ title: "HR Dashboard" }, { name: "robots", content: "noindex" }] }),
   component: Dashboard,
 });
@@ -182,7 +182,7 @@ function Dashboard() {
   const signOut = async () => {
     await supabase.auth.signOut();
     qc.clear();
-    navigate({ to: "/auth" });
+    navigate({ to: "/admin/login" });
   };
 
   if (!isAdmin) {

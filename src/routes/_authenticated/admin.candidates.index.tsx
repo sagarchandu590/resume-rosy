@@ -67,7 +67,7 @@ function CandidatesList() {
   const signOut = async () => {
     await supabase.auth.signOut();
     qc.clear();
-    navigate({ to: "/auth" });
+    navigate({ to: "/admin/login" });
   };
 
   if (!isAdmin) {
@@ -95,7 +95,7 @@ function CandidatesList() {
           </div>
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" asChild>
-              <Link to="/dashboard"><ArrowLeft className="h-4 w-4 mr-1" />Dashboard</Link>
+              <Link to="/admin/dashboard"><ArrowLeft className="h-4 w-4 mr-1" />Dashboard</Link>
             </Button>
             <Button variant="secondary" size="sm" onClick={signOut}><LogOut className="h-4 w-4 mr-1" />Sign out</Button>
           </div>
