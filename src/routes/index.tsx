@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { Loader2, ShieldCheck } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -102,11 +102,6 @@ function Index() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 py-10 px-4">
       <Toaster />
       <div className="mx-auto max-w-4xl">
-        <div className="flex justify-end mb-3">
-          <Link to="/auth" className="inline-flex items-center gap-2 text-sm text-indigo-700 hover:text-indigo-900 font-medium">
-            <ShieldCheck className="h-4 w-4" /> Admin Login
-          </Link>
-        </div>
         <Card className="shadow-2xl border-0 overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-primary-foreground">
             <CardTitle className="text-3xl font-bold">Candidate Details</CardTitle>
