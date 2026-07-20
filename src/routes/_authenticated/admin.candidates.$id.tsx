@@ -45,7 +45,7 @@ function CandidateDetail() {
   const signOut = async () => {
     await supabase.auth.signOut();
     qc.clear();
-    navigate({ to: "/auth" });
+    navigate({ to: "/admin/login" });
   };
 
   const downloadResume = async () => {
