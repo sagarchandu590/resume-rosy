@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin.dashboard'
 import { Route as AuthenticatedAdminCandidatesIndexRouteImport } from './routes/_authenticated/admin.candidates.index'
 import { Route as AuthenticatedAdminCandidatesIdRouteImport } from './routes/_authenticated/admin.candidates.$id'
 
@@ -41,6 +42,12 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthenticatedAdminDashboardRoute =
+  AuthenticatedAdminDashboardRouteImport.update({
+    id: '/admin/dashboard',
+    path: '/admin/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminCandidatesIndexRoute =
   AuthenticatedAdminCandidatesIndexRouteImport.update({
     id: '/admin/candidates/',
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/thank-you': typeof ThankYouRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
   '/admin/candidates/': typeof AuthenticatedAdminCandidatesIndexRoute
 }
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/thank-you': typeof ThankYouRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
   '/admin/candidates': typeof AuthenticatedAdminCandidatesIndexRoute
 }
@@ -77,6 +86,7 @@ export interface FileRoutesById {
   '/thank-you': typeof ThankYouRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/': typeof AdminIndexRoute
+  '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/candidates/$id': typeof AuthenticatedAdminCandidatesIdRoute
   '/_authenticated/admin/candidates/': typeof AuthenticatedAdminCandidatesIndexRoute
 }
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/admin/login'
     | '/admin/'
+    | '/admin/dashboard'
     | '/admin/candidates/$id'
     | '/admin/candidates/'
   fileRoutesByTo: FileRoutesByTo
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/admin/login'
     | '/admin'
+    | '/admin/dashboard'
     | '/admin/candidates/$id'
     | '/admin/candidates'
   id:
@@ -104,6 +116,7 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/admin/login'
     | '/admin/'
+    | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/candidates/$id'
     | '/_authenticated/admin/candidates/'
   fileRoutesById: FileRoutesById
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_authenticated/admin/dashboard': {
+      id: '/_authenticated/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/candidates/': {
       id: '/_authenticated/admin/candidates/'
       path: '/admin/candidates'
@@ -169,11 +189,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminCandidatesIdRoute: typeof AuthenticatedAdminCandidatesIdRoute
   AuthenticatedAdminCandidatesIndexRoute: typeof AuthenticatedAdminCandidatesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
   AuthenticatedAdminCandidatesIdRoute: AuthenticatedAdminCandidatesIdRoute,
   AuthenticatedAdminCandidatesIndexRoute:
     AuthenticatedAdminCandidatesIndexRoute,
